@@ -46,14 +46,56 @@ use HasTranslatableTable;
 }
 ```
 
-### Translation Model
 
-The translation model should follow Laravel conventions, such as having a `post_id` foreign key and `locale` column. Example:
+### Creating a Translation Model
+
+For each translatable model, you will need to create a corresponding translation model. For example, for the `Article` model, you will need to create a `ArticleTranslation` model like this:
 
 ```php
-class PostTranslation extends Model
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ArticleTranslation extends Model
 {
-    protected $fillable = ['title', 'description', 'locale', 'post_id'];
+    use HasFactory;
+
+    protected $guarded = [];
+}
+```
+
+This model should be associated with the `article_translations` table (or another name depending on your schema). It contains the translated fields and references the original model (in this case, `Article`).
+
+### Migration for Translations
+
+You will also need to create a migration for the `article_translations` table. Here's an example migration:
+
+```php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateArticleTranslationsTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('article_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->string('locale', 5)->nullable(false)->index();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->timestamps();
+
+            $table->unique(['article_id', 'locale']);
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('article_translations');
+    }
 }
 ```
 
@@ -96,6 +138,10 @@ $translations = $post->i18n; // Retrieves all translations
 
 - **Customizing Locales:** You can dynamically define available locales via the configuration file.
 - **Eloquent Events:** Translations are automatically handled during `create` and `update` events.
+
+## Notes
+
+This is the first version of the package. The README and code may contain some inaccuracies or incomplete features. If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
 
 ## Testing
 
