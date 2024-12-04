@@ -1,0 +1,47 @@
+{
+    "name": "akuadev/laravel-translatable-table",
+    "description": "Provides simple translation for model data via db",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Oleksandr Kramarenko",
+            "email": "dev.kramarenko@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Akuadev\\LaravelTranslatableTable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Akuadev\\LaravelTranslatableTable\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "pestphp/pest": "3.x-dev",
+        "orchestra/testbench": "*",
+        "laravel/pint": "^1.14"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Akuadev\\LaravelTranslatableTable\\TranslatableTableServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "sort-packages": true,
+            "optimize-autoloader": true,
+            "pestphp/pest-plugin": true
+        }
+    }
+}
