@@ -53,7 +53,7 @@ The translation model should follow Laravel conventions, such as having a `post_
 ```php
 class PostTranslation extends Model
 {
-protected $fillable = ['title', 'description', 'locale', 'post_id'];
+    protected $fillable = ['title', 'description', 'locale', 'post_id'];
 }
 ```
 
@@ -63,13 +63,13 @@ Update the `config/table-translations.php` file to define the supported locales:
 
 ```php
 return [
-'locales' => [
-'en' => 'English',
-'es' => 'Spanish',
-'fr' => 'French',
-],
-'translation_model_suffix' => 'Translation',
-'attribute_name' => 'i18n',
+    'locales' => [
+        'en' => 'English',
+        'es' => 'Spanish',
+        'fr' => 'French',
+    ],
+    'translation_model_suffix' => 'Translation',
+    'attribute_name' => 'i18n',
 ];
 ```
 
@@ -79,12 +79,12 @@ You can manage translations directly via the `i18n` attribute on the translatabl
 
 ```php
 $post = Post::create([
-'slug' => 'example-post',
-'content' => 'This is the content.',
-'i18n' => [
-'en' => ['title' => 'Example Post', 'description' => 'An example post description.'],
-'fr' => ['title' => 'Exemple de publication', 'description' => 'Une description de publication.'],
-],
+    'slug' => 'example-post',
+    'content' => 'This is the content.',
+    'i18n' => [
+        'en' => ['title' => 'Example Post', 'description' => 'An example post description.'],
+        'fr' => ['title' => 'Exemple de publication', 'description' => 'Une description de publication.'],
+    ],
 ]);
 
 // Access translations
