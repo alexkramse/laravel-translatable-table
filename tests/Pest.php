@@ -11,7 +11,7 @@
 |
 */
 
-use Akuadev\LaravelTranslatableTable\Tests\TestCase;
+use Alexkramse\LaravelTranslatableTable\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 

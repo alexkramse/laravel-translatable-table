@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'attribute_name' => 'i18n',
+    'attribute_name' => 'translations',
     'locales' => [
         'en' => 'English',
         'uk' => 'Ukrainian',

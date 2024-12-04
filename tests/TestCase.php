@@ -1,8 +1,8 @@
 <?php
 
-namespace Akuadev\LaravelTranslatableTable\Tests;
+namespace Alexkramse\LaravelTranslatableTable\Tests;
 
-use Akuadev\LaravelTranslatableTable\TranslatableTableServiceProvider;
+use Alexkramse\LaravelTranslatableTable\TranslatableTableServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -12,7 +12,7 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
-//        $this->artisan('migrate', ['--database' => 'testbench'])->run();
+        //        $this->artisan('migrate', ['--database' => 'testbench'])->run();
     }
 
     protected function getEnvironmentSetUp($app): void
@@ -30,7 +30,7 @@ abstract class TestCase extends Orchestra
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->beforeApplicationDestroyed(
-            fn() => $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run()
+            fn () => $this->artisan('migrate:rollback', ['--database' => 'testbench'])->run()
         );
     }
 

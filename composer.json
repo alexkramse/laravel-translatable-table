@@ -12,12 +12,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Akuadev\\LaravelTranslatableTable\\": "src/"
+            "Alexkramse\\LaravelTranslatableTable\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Akuadev\\LaravelTranslatableTable\\Tests\\": "tests/"
+            "Alexkramse\\LaravelTranslatableTable\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -31,7 +31,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Akuadev\\LaravelTranslatableTable\\TranslatableTableServiceProvider"
+                "Alexkramse\\LaravelTranslatableTable\\TranslatableTableServiceProvider"
             ]
         }
     },

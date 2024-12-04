@@ -1,6 +1,6 @@
 <?php
 
-namespace Akuadev\LaravelTranslatableTable;
+namespace Alexkramse\LaravelTranslatableTable;
 
 use Illuminate\Support\ServiceProvider;
 

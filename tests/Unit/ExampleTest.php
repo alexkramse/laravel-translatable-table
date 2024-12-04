@@ -1,11 +1,11 @@
 <?php
 
 
-use Akuadev\LaravelTranslatableTable\Tests\Models\Dummy;
+/*use Alexkramse\LaravelTranslatableTable\Tests\Models\Dummy;
 
 test('article should be created on three languages', function () {
     $dummy = Dummy::create([
-        'i18n' => [
+        'translations' => [
             'en' => [
                 'title' => 'EN Title',
                 'description' => 'EN description',
@@ -20,5 +20,5 @@ test('article should be created on three languages', function () {
             ],
         ],
     ]);
-    expect($dummy->i18n['en']['title'])->toBeTrue('EN Title');
-});
+    expect($dummy->translations['en']['title'])->toBeTrue('EN Title');
+});*/

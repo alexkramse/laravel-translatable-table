@@ -1,9 +1,10 @@
 <?php
 
-namespace Akuadev\LaravelTranslatableTable\Traits;
+namespace Alexkramse\LaravelTranslatableTable\Traits;
 
-use Akuadev\LaravelTranslatableTable\Casts\TranslatedAttrCast;
-use Akuadev\LaravelTranslatableTable\Casts\TranslationsAttrCast;
+use Alexkramse\LaravelTranslatableTable\Casts\TranslatedAttrCast;
+use Alexkramse\LaravelTranslatableTable\Casts\TranslationsAttrCast;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -33,10 +34,10 @@ trait HasTranslatableTable
             return;
         }
 
-        $this->append(self::getI18nAttrName());
+        $this->append(self::getTranslationsAttrName());
         $this->append($this->translatableTableAttributes() ?? []);
 
-        $this->mergeCasts([self::getI18nAttrName() => TranslationsAttrCast::class]);
+        $this->mergeCasts([self::getTranslationsAttrName() => TranslationsAttrCast::class]);
         foreach ($this->translatableTableAttributes() as $attribute) {
             $this->mergeCasts([$attribute => TranslatedAttrCast::class]);
         }
@@ -50,7 +51,7 @@ trait HasTranslatableTable
         return $this->hasMany(self::getTranslatableTableRelationName());
     }
 
-    protected function getI18nValueByKey(string $key): string
+    protected function getTranslationsValueByKey(string $key): string
     {
         $translation = $this->tableTranslations
             ->where('locale', app()->getLocale())
@@ -79,17 +80,17 @@ trait HasTranslatableTable
     }
 
     /**
-     * Return attribute name for i18n languages array, ex: 'i18n'
-     * $model->i18n = ['en' => ['title'=>'English Title'], 'uk' => ['title'=>'Ukrainian Title']]
+     * Return attribute name for Translations languages array, ex: 'Translations'
+     * $model->translations = ['en' => ['title'=>'English Title'], 'uk' => ['title'=>'Ukrainian Title']]
      */
-    public static function getI18nAttrName(): string
+    public static function getTranslationsAttrName(): string
     {
-        return (string) config('table-translations.attribute_name', 'i18n');
+        return (string) config('table-translations.attribute_name', 'Translations');
     }
 
     protected static function upsertTranslationsForModel(Model $model, $isUpdate = false): void
     {
-        if (! in_array($model::getI18nAttrName(), array_keys($model->attributes))) {
+        if (! in_array($model::getTranslationsAttrName(), array_keys($model->attributes))) {
             return;
         }
 
@@ -99,28 +100,26 @@ trait HasTranslatableTable
 
         $foreignKeyName = $model->tableTranslations()->getForeignKeyName();
 
-        $translations = $isUpdate ? $model->i18n : [];
+        $translations = $isUpdate ? $model->translations : [];
 
         // TODO: support 'locale' => to key
         foreach (self::getLocales() as $locale) {
 
+            if ($isUpdate && ! isset($translations[$locale])) {
+                continue;
+            }
+
             $translations[$locale][$foreignKeyName] = $model->id;
             $translations[$locale]['locale'] = $locale;
 
-            if ($isUpdate && ! array_key_exists($locale, $model->attributes[$model::getI18nAttrName()])) {
-                continue;
-            }
             foreach ($model->translatableTableAttributes() as $localizableAttribute) {
-                //                dump('1', $model->attributes[$model::getI18nAttrName()][$locale]);
-                if ($isUpdate && ! array_key_exists($localizableAttribute, $model->attributes[$model::getI18nAttrName()][$locale])) {
+                //                dump('1', $model->attributes[$model::getTranslationsAttrName()][$locale]);
+                if ($isUpdate && ! array_key_exists($localizableAttribute, $model->attributes[$model::getTranslationsAttrName()][$locale])) {
                     continue;
                 }
-                //                dump('2', $model->attributes[$model::getI18nAttrName()][$locale][$localizableAttribute]);
-                $translations[$locale][$localizableAttribute] = $model->attributes[$model::getI18nAttrName()][$locale][$localizableAttribute] ?? null;
+                //                dump('2', $model->attributes[$model::getTranslationsAttrName()][$locale][$localizableAttribute]);
+                $translations[$locale][$localizableAttribute] = $model->attributes[$model::getTranslationsAttrName()][$locale][$localizableAttribute] ?? null;
             }
-
-            //            $translations[] = $tr;
-            //            dump($tr);
         }
 
         if (empty($translations)) {
@@ -132,29 +131,60 @@ trait HasTranslatableTable
             [$foreignKeyName, 'locale'],
             $model->translatableTableAttributes()
         );
+
+        $model->load('tableTranslations');
     }
 
     /**
-     * Remove i18n attribute before create new record
+     * Remove Translations attribute before create new record
      */
     protected function getAttributesForInsert(): array
     {
         $attrs = $this->getAttributes();
-        unset($attrs[static::getI18nAttrName()]);
+        unset($attrs[static::getTranslationsAttrName()]);
 
         return $attrs;
     }
 
     /**
-     * Remove i18n attribute before update record
+     * Perform a model update operation.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return bool
      */
-    protected function getDirtyForUpdate(): array
+    protected function performUpdate(Builder $query)
     {
-        $dirty = $this->getDirty();
-        $dirty = array_diff_key($dirty, array_flip([...$this->appends, 'tableTranslations']));
-        // TODO: check
-        //        unset($dirty[static::getI18nAttrName()]);
+        // If the updating event returns false, we will cancel the update operation so
+        // developers can hook Validation systems into their models and cancel this
+        // operation if the model does not pass validation. Otherwise, we update.
+        if ($this->fireModelEvent('updating') === false) {
+            return false;
+        }
 
-        return $dirty;
+        // First we need to create a fresh query instance and touch the creation and
+        // update timestamp on the model which are maintained by us for developer
+        // convenience. Then we will just continue saving the model instances.
+        if ($this->usesTimestamps()) {
+            $this->updateTimestamps();
+        }
+
+        // Once we have run the update operation, we will fire the "updated" event for
+        // this model instance. This will allow developers to hook into these after
+        // models are updated, giving them a chance to do any special processing.
+        $dirty = $this->getDirtyForUpdate();
+
+        if (count($dirty) > 0) {
+            if (isset($dirty[static::getTranslationsAttrName()])) {
+                $dirty = array_diff_key($dirty, array_flip([...$this->appends, 'translations']));
+            }
+
+            $this->setKeysForSaveQuery($query)->update($dirty);
+
+            $this->syncChanges();
+
+            $this->fireModelEvent('updated', false);
+        }
+
+        return true;
     }
 }
