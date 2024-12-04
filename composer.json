@@ -1,5 +1,5 @@
 {
-    "name": "akuadev/laravel-translatable-table",
+    "name": "alexkramse/laravel-translatable-table",
     "description": "Provides simple translation for model data via db",
     "type": "library",
     "license": "MIT",

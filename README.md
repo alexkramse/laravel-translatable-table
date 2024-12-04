@@ -7,7 +7,7 @@ Laravel Translatable Table is a package designed to simplify handling translatio
 To install the package, use Composer:
 
 ```bash
-composer require akuadev/laravel-translatable-table
+composer require alexkramse/laravel-translatable-table
 ```
 
 ## Configuration
@@ -15,7 +15,7 @@ composer require akuadev/laravel-translatable-table
 After installation, publish the configuration file:
 
 ```bash
-php artisan vendor:publish --tag=config --provider="Akuadev\LaravelTranslatableTable\TranslatableTableServiceProvider"
+php artisan vendor:publish --tag=config --provider="Alexkramse\LaravelTranslatableTable\TranslatableTableServiceProvider"
 ```
 
 This will create a `config/table-translations.php` file, where you can define supported locales and configure translation settings.
@@ -31,7 +31,7 @@ This will create a `config/table-translations.php` file, where you can define su
 Example:
 
 ```php
-use Akuadev\LaravelTranslatableTable\Traits\HasTranslatableTable;
+use Alexkramse\LaravelTranslatableTable\Traits\HasTranslatableTable;
 
 class Post extends Model
 {
