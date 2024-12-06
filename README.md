@@ -1,9 +1,15 @@
-# Laravel Translatable Table
+# Laravel Translatable Table 
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/alexkramse/laravel-translatable-table.svg)](https://packagist.org/packages/alexkramse/laravel-translatable-table)
+[![License](https://img.shields.io/github/license/alexkramse/laravel-translatable-table)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/alexkramse/laravel-translatable-table/actions)
 
 Laravel Translatable Table is a package designed to simplify handling translations stored in a separate table. It provides traits, casts, and utilities to manage and interact with translatable attributes seamlessly.
 
-## Installation
+## Supported Laravel Versions
+The package supports Laravel 8, 9, and 10.
 
+## Installation
 To install the package, use Composer:
 
 ```bash
