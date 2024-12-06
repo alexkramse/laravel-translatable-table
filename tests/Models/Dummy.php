@@ -12,6 +12,7 @@ class Dummy extends Model
     use HasTranslatableTable;
 
     protected $fillable = ['user_data'];
+
     public function translatableTableAttributes(): array
     {
         return ['title', 'description'];
