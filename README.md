@@ -2,8 +2,8 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/alexkramse/laravel-translatable-table.svg)](https://packagist.org/packages/alexkramse/laravel-translatable-table)
 [![License](https://img.shields.io/github/license/alexkramse/laravel-translatable-table)](LICENSE)
-[![Test](https://img.shields.io/github/actions/workflow/status/alexkramse/laravel-translatable-table/pest.yml?branch=main&label=code%20style)](https://github.com/alexkramse/laravel-translatable-table/actions/workflows/pest.yml)
-[![Pint Check](https://img.shields.io/github/actions/workflow/status/alexkramse/laravel-translatable-table/pint.yml?branch=main&label=code%20style)](https://github.com/alexkramse/laravel-translatable-table/actions/workflows/pint.yml)
+[![Test](https://img.shields.io/github/actions/workflow/status/alexkramse/laravel-translatable-table/pest.yml?branch=main&label=Pest)](https://github.com/alexkramse/laravel-translatable-table/actions/workflows/pest.yml)
+[![Pint Check](https://img.shields.io/github/actions/workflow/status/alexkramse/laravel-translatable-table/pint.yml?branch=main&label=Pint)](https://github.com/alexkramse/laravel-translatable-table/actions/workflows/pint.yml)
 
 Laravel Translatable Table is a package designed to simplify handling translations stored in a separate table. It provides traits, casts, and utilities to manage and interact with translatable attributes seamlessly.
 
